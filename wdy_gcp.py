@@ -10,7 +10,29 @@ def wdy_gcp():
     
     st.info("当前客户名称表")
     # 加载客户名称文件
-    customerDf = pd.read_excel("万得云/客户名称.xlsx")
+
+    # 客户名称表
+    # 客户project-id	客户公司名称
+    # translat202308	小黑鱼
+    # atteam	玖邦数码
+    # fengqi-439402	玖邦数码
+    # gomo-439402	玖邦数码
+    # qingbing	玖邦数码
+    # xiahua-439402	玖邦数码
+    # yinuo-439402	玖邦数码
+    # yg-fish-wecloud-1	优聚大鱼
+    # yg-fish-wecloud-2	优聚大鱼
+    # yg-fish-wecloud-3	优聚大鱼
+    # yg-fish-wecloud-4	优聚大鱼
+    # translate-292306	优聚大鱼
+    # graceful-fold-417204	优聚大鱼
+    # woven-space-417204	优聚大鱼
+    customerDf = pd.DataFrame({
+        '客户project-id': ['translat202308', 'atteam', 'fengqi-439402', 'gomo-439402', 'qingbing', 'xiahua-439402', 'yinuo-439402', 'yg-fish-wecloud-1', 'yg-fish-wecloud-2', 'yg-fish-wecloud-3', 'yg-fish-wecloud-4', 'translate-292306', 'graceful-fold-417204', 'woven-space-417204'],
+        '客户公司名称': ['小黑鱼', '玖邦数码', '玖邦数码', '玖邦数码', '玖邦数码', '玖邦数码', '玖邦数码', '优聚大鱼', '优聚大鱼', '优聚大鱼', '优聚大鱼', '优聚大鱼', '优聚大鱼', '优聚大鱼']
+    })
+
+    # customerDf = pd.read_excel("万得云/客户名称.xlsx")
     st.dataframe(customerDf) 
     # 上传EXCEL文件
     uploaded_file = st.file_uploader("上传万得云GCP报表", type="xlsx")
