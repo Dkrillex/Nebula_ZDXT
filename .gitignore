@@ -1,3 +1,11 @@
 .idea/
 .venv/
+__pycache__/*
+__pycache__
+.idea/
+.venv/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+*$py.class
