@@ -10,7 +10,7 @@ def wdy_gcp():
     
     st.info("当前客户名称表")
     # 加载客户名称文件
-    customerDf = pd.read_excel("Script001\万得云\客户名称.xlsx")
+    customerDf = pd.read_excel("万得云/客户名称.xlsx")
     st.dataframe(customerDf) 
     # 上传EXCEL文件
     uploaded_file = st.file_uploader("上传万得云GCP报表", type="xlsx")
