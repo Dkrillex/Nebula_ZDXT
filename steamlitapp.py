@@ -33,32 +33,21 @@ def main():
     tuo_bang_aws = importlib.import_module('tuo_bang_aws').tuo_bang_aws
     xunlei_smartchain_aws = importlib.import_module('xunlei_smartchain_aws').xunlei_smartchain_aws
     zhenghao_aws = importlib.import_module('zhenghao_aws').zhenghao_aws
-    pg = st.navigation({'星云财务工具包':[
-        st.Page(home, title="主页", icon="🏠"),
-        st.Page(wdy_gcp, title="万得云GCP翻译(完成)", icon="📊"),
-        st.Page(xunlei_cdn_aws, title="迅雷-CDN-AWS（完成）", icon="📊"),
-        st.Page(All_bill_microsoft, title="总账单-微软云(完成)", icon="📊"),
-        st.Page(tuo_bang_aws, title="拓邦-AWS（完成）", icon="📊"),
-        st.Page(xunlei_smartchain_aws, title="迅雷-Smartchain-AWS（完成）", icon="📊"),
-        st.Page(zhenghao_aws, title="正浩-AWS(需求不明显)", icon="📊"),
-    ]})
-    pg.run()
 
-
-    # st.sidebar.title('星云财务工具包')
+    st.sidebar.title('星云财务工具包')
     
-    # pages = {
-    #     "主页": home,
-    #     "万得云GCP翻译(完成)": wdy_gcp,
-    #     "迅雷-CDN-AWS（完成）": xunlei_cdn_aws,
-    #     "总账单-微软云(完成)": All_bill_microsoft,
-    #     "拓邦-AWS（完成）": tuo_bang_aws,
-    #     "迅雷-Smartchain-AWS（完成）": xunlei_smartchain_aws,
-    #     "正浩-AWS(需求不明显)": zhenghao_aws
-    # }
+    pages = {
+        "主页": home,
+        "万得云GCP翻译(完成)": wdy_gcp,
+        "迅雷-CDN-AWS（完成）": xunlei_cdn_aws,
+        "总账单-微软云(完成)": All_bill_microsoft,
+        "拓邦-AWS（完成）": tuo_bang_aws,
+        "迅雷-Smartchain-AWS（完成）": xunlei_smartchain_aws,
+        "正浩-AWS(需求不明显)": zhenghao_aws
+    }
     
-    # page = st.sidebar.selectbox("选择功能页面", list(pages.keys()))
-    # pages[page]()
+    page = st.sidebar.selectbox("选择功能页面", list(pages.keys()))
+    pages[page]()
 
 if __name__ == "__main__":
     main()
