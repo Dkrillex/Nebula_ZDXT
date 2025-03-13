@@ -80,14 +80,14 @@ def All_bill_microsoft():
                 st.dataframe(group)
 
 
-    if os.path.exists(output_filename):
-        with open(output_filename, "rb") as file:
-                st.download_button(
-                    label="下载处理后的账单",
-                    data=file,
-                    file_name=output_filename,
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ) 
+        if os.path.exists(output_filename):
+            with open(output_filename, "rb") as file:
+                    st.download_button(
+                        label="下载处理后的账单",
+                        data=file,
+                        file_name=output_filename,
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    ) 
 
        
       
