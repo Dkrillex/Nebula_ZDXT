@@ -32,118 +32,17 @@ def tuo_bang_aws_3677():
                 st.dataframe(df.head(1000))
                 # 东京的表 product/region = ap-northeast-1
                 DJ_df = df[df['product/region'] == 'ap-northeast-1']
-                # bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	pricing/unit	product/region
+                #我只需要这些列  bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	pricing/unit	product/region
                 DJ_df=DJ_df[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','pricing/unit','product/region']]
                 st.write(f"东京数据行数: {len(DJ_df)}")
-                st.write(DJ_df['lineItem/UnblendedCost'].sum())
+                st.write(f"东京数据总费用: {DJ_df['lineItem/UnblendedCost'].sum()}")
                 st.write("东京数据预览:")
                 st.dataframe(DJ_df)
 
-                #--------------------其他资源单独修改的----------------------------------------------------
-                # Other_df= df[df['product/region'] != 'ap-northeast-1']
-                #   #pricing/unit列筛选：Hrs
-                # Other_df =Other_df[Other_df['pricing/unit'] == 'Hrs']
-                # st.write(f"Hrs数据行数: {len(Other_df)}")
-                # st.write("Hrs数据预览:")
-                # st.dataframe(Other_df.head(1000))
-                  #lineItem/ProductCode列筛选：AmazonRDS和AmazonEC2
-        #         EC2_df = Other_df[Other_df['lineItem/ProductCode'].isin(['AmazonEC2'])]
-        #         st.write(f"AmazonRDS和AmazonEC2数据行数: {len(EC2_df)}")
-        #         st.write("AmazonRDS和AmazonEC2数据预览:")
-        #         st.dataframe(EC2_df.head(1000))
-        #         EC2_numeric_cols = ['lineItem/UsageAmount', 'lineItem/UnblendedRate', 'lineItem/UnblendedCost', 'pricing/publicOnDemandRate', 'pricing/publicOnDemandCost']
-        #         EC2_new_df = EC2_df[EC2_numeric_cols + ['product/region','product/instanceType']+ ['product/deploymentOption']+['lineItem/ProductCode']+['pricing/term']+['lineItem/LineItemDescription']+['product/databaseEngine']].copy()
-        #         EC2_new_df[EC2_numeric_cols] = EC2_new_df[EC2_numeric_cols].astype(float)
-        #         EC2_new_df['lineItem/UnblendedCost'] = EC2_new_df['pricing/publicOnDemandCost']
-        #         EC2_new_df['lineItem/UnblendedRate'] = EC2_new_df['pricing/publicOnDemandRate']
-
-        #         EC2_new_df['lineItem/UnblendedRate'] = np.where(EC2_new_df['lineItem/LineItemDescription'].str.contains('reserved') & EC2_new_df['pricing/term'].str.contains('Reserved'), EC2_new_df['pricing/publicOnDemandRate'], EC2_new_df['lineItem/UnblendedRate'])
-        #         EC2_new_df['lineItem/UnblendedCost'] = np.where(EC2_new_df['lineItem/LineItemDescription'].str.contains('reserved') & EC2_new_df['pricing/term'].str.contains('Reserved'), EC2_new_df['pricing/publicOnDemandCost'], EC2_new_df['lineItem/UnblendedCost'])
-        
-
-        # # 判断lineItem/ProductCode是AmazonRDS的话且pricing/term包含'Reserved'的话
-        # # lineItem/LineItemDescription :Aurora MySQL, db.r5.large reserved instance applied
-        # # lineItem/LineItemDescription修改后： USD 0.70 per RDS db.r5.xlarge Single-AZ instance hour (or partial hour) running Aurora MySQL
-        # # lineItem/LineItemDescription = USD + df[pricing/publicOnDemandRate] +per RDS +df[product/instanceType] +df[product/deploymentOption] +instance hour (or partial hour) running Aurora MySQL
-        #         EC2_new_df['lineItem/LineItemDescription'] = np.where(
-        #         (EC2_new_df['lineItem/ProductCode'] == 'AmazonRDS') & (EC2_new_df['pricing/term'].str.contains('Reserved')), 
-        #         'USD ' + EC2_new_df['pricing/publicOnDemandRate'].astype(str) + ' per RDS ' + EC2_new_df['product/instanceType'] + ' ' + EC2_new_df['product/deploymentOption'] + ' instance hour (or partial hour) running ' + EC2_new_df['product/databaseEngine'], 
-        #         EC2_new_df['lineItem/LineItemDescription']
-        #         )
-        # # 判断lineItem/ProductCode是AmazonEC2的话且pricing/term包含'Reserved'的话
-        # # lineItem/LineItemDescription :Linux/UNIX (Amazon VPC), t2.xlarge reserved instance applied
-        # # lineItem/LineItemDescription修改后： $0.192 per On Demand Linux t3.xlarge Instance Hour
-        # # lineItem/LineItemDescription = $ + df[pricing/publicOnDemandRate] + per On Demand Linux + df[product/instanceType] + Instance Hour
-        #         EC2_new_df['lineItem/LineItemDescription'] = np.where(
-        #         (EC2_new_df['lineItem/ProductCode'] == 'AmazonEC2') & (EC2_new_df['pricing/term'].str.contains('Reserved')),
-        #         '$' + EC2_new_df['pricing/publicOnDemandRate'].astype(str) + ' per On Demand Linux ' + EC2_new_df['product/instanceType'] + ' Instance Hour', 
-        #         EC2_new_df['lineItem/LineItemDescription']
-        #         )
-        #         st.write(f"数据预览:{len(EC2_new_df)}")
-        #         st.dataframe(EC2_new_df)
-        #         # 筛选出lineItem/UnblendedRate 为 0.194 的数据
-        #         single_df = EC2_new_df[EC2_new_df['lineItem/UnblendedRate'] == 0.194]
-        #         insert_df=single_df
-
-        #         st.write(f"EC2insert_df新增资源数据行数: {len(insert_df)}")
-        #         st.dataframe(insert_df)
-
-
-        #         st.write(f"lineItem/UnblendedRate 为 0.194 数据行数: {len(single_df)}")
-        #         st.write("lineItem/UnblendedRate 为 0.194 数据预览:")
-        #         st.dataframe(single_df.head(1000))
-        #         # new_df去掉single_df
-        #         EC2_new_df = EC2_new_df[EC2_new_df['lineItem/UnblendedRate'] != 0.194]
-        #         st.write(f"lineItem/UnblendedRate 为 0.194 数据行数: {len(EC2_new_df)}")
-        #         st.write("lineItem/UnblendedRate 为 0.194 数据预览:")
-        #         st.dataframe(EC2_new_df.head(1000))
-
-
-        #         RDS_df = Other_df[Other_df['lineItem/ProductCode'].isin(['AmazonRDS'])]
-        #         st.write(f"AmazonRDS数据行数: {len(RDS_df)}")
-        #         st.write("AmazonRDS数据预览:")
-        #         st.dataframe(RDS_df.head(1000))
-        #         RDS_numeric_cols = ['lineItem/UsageAmount', 'lineItem/UnblendedRate', 'lineItem/UnblendedCost', 'pricing/publicOnDemandRate', 'pricing/publicOnDemandCost']
-        #         RDS_new_df = RDS_df[RDS_numeric_cols + ['product/region','product/instanceType']+ ['product/deploymentOption']+['lineItem/ProductCode']+['pricing/term']+['lineItem/LineItemDescription']+['product/databaseEngine']].copy()
-        #         RDS_new_df[RDS_numeric_cols] = RDS_new_df[RDS_numeric_cols].astype(float)
-        #         RDS_new_df['lineItem/UnblendedCost'] = RDS_new_df['pricing/publicOnDemandCost']
-        #         RDS_new_df['lineItem/UnblendedRate'] = RDS_new_df['pricing/publicOnDemandRate']
-
-        #         RDS_new_df['lineItem/UnblendedRate'] = np.where(RDS_new_df['lineItem/LineItemDescription'].str.contains('reserved') & RDS_new_df['pricing/term'].str.contains('Reserved'), RDS_new_df['pricing/publicOnDemandRate'], RDS_new_df['lineItem/UnblendedRate'])
-        #         RDS_new_df['lineItem/UnblendedCost'] = np.where(RDS_new_df['lineItem/LineItemDescription'].str.contains('reserved') & RDS_new_df['pricing/term'].str.contains('Reserved'), RDS_new_df['pricing/publicOnDemandCost'], RDS_new_df['lineItem/UnblendedCost'])
-        
-
-        # # 判断lineItem/ProductCode是AmazonRDS的话且pricing/term包含'Reserved'的话
-        # # lineItem/LineItemDescription :Aurora MySQL, db.r5.large reserved instance applied
-        # # lineItem/LineItemDescription修改后： USD 0.70 per RDS db.r5.xlarge Single-AZ instance hour (or partial hour) running Aurora MySQL
-        # # lineItem/LineItemDescription = USD + df[pricing/publicOnDemandRate] +per RDS +df[product/instanceType] +df[product/deploymentOption] +instance hour (or partial hour) running Aurora MySQL
-        #         RDS_new_df['lineItem/LineItemDescription'] = np.where(
-        #         (RDS_new_df['lineItem/ProductCode'] == 'AmazonRDS') & (RDS_new_df['pricing/term'].str.contains('Reserved')), 
-        #         'USD ' + RDS_new_df['pricing/publicOnDemandRate'].astype(str) + ' per RDS ' + RDS_new_df['product/instanceType'] + ' ' + RDS_new_df['product/deploymentOption'] + ' instance hour (or partial hour) running ' + RDS_new_df['product/databaseEngine'], 
-        #         RDS_new_df['lineItem/LineItemDescription']
-        #         )
-        #         st.write(f"数据预览:{len(RDS_new_df)}")
-        #         st.dataframe(RDS_new_df)
-        #         single_df = RDS_new_df[RDS_new_df['lineItem/UnblendedRate'] != 0.35]
-        #         st.write(f"lineItem/UnblendedRate 不为 0.35 数据行数: {len(single_df)}")
-        #         st.write("lineItem/UnblendedRate 不为 0.35 数据预览:")
-        #         st.dataframe(single_df.head(1000))
-        #         # 将single_df添加到insert_df
-        #         insert_df = pd.concat([insert_df, single_df], ignore_index=True)
-        #         st.write(f"RDSinsert_df新增资源数据行数: {len(insert_df)}")
-        #         st.dataframe(insert_df)
-        
-        #         # new_df去掉single_df
-        #         RDS_new_df = RDS_new_df[RDS_new_df['lineItem/UnblendedRate'] == 0.35]
-        #         st.write(f"lineItem/UnblendedRate 为 0.35 数据行数: {len(RDS_new_df)}")
-        #         st.write("lineItem/UnblendedRate 为 0.35 数据预览:")
-        #         st.dataframe(RDS_new_df.head(1000))
-
-                #--------------------新增资源--------------------------------
-                insert_df=[]
                 #------------------其他修改后的资源----------------------------------------------------
                 Other_new_df = df[(df['product/region'] != 'ap-northeast-1') & (df['lineItem/LineItemType'] != 'SppDiscount')]
                 EC2_condition = Other_new_df['lineItem/ProductCode'].isin(['AmazonEC2']) & Other_new_df['pricing/unit'].isin(['Hrs'])
+                GP3_condition = Other_new_df['lineItem/ProductCode'].isin(['AmazonEC2']) & Other_new_df['pricing/unit'].isin(['GB-Mo'])
                 RDS_condition = Other_new_df['lineItem/ProductCode'].isin(['AmazonRDS']) & Other_new_df['pricing/unit'].isin(['Hrs'])
                 # testdf=Other_new_df[Other_new_df['lineItem/ProductCode'].isin(['AmazonEC2'])& Other_new_df['pricing/unit'].isin(['Hrs'])]
                 # st.dataframe(testdf)
@@ -156,6 +55,10 @@ def tuo_bang_aws_3677():
                 st.write(f"未修改的RDS_condition数据行数: {len(Other_new_df[RDS_condition])}")
                 st.write("未修改的RDS_condition数据预览:")
                 st.dataframe(Other_new_df[RDS_condition].head(1000))
+                 # 查看GP3_condition的数据
+                st.write(f"未修改的GP3_condition数据行数: {len(Other_new_df[GP3_condition])}")
+                st.write("未修改的GP3_condition数据预览:")
+                st.dataframe(Other_new_df[GP3_condition].head(1000))
 
                 Other_new_df.loc[EC2_condition, 'lineItem/UnblendedCost'] = Other_new_df.loc[EC2_condition, 'pricing/publicOnDemandCost']
                 Other_new_df.loc[RDS_condition, 'lineItem/UnblendedRate'] = Other_new_df.loc[RDS_condition, 'pricing/publicOnDemandRate']
@@ -174,30 +77,43 @@ def tuo_bang_aws_3677():
                 st.write("修改后的RDS_update_condition数据预览:")
                 st.dataframe(Other_new_df[RDS_update_condition].head(1000))
                 # Other_new_df筛选出EC2_update_condition 且lineItem/UsageAmount 为 672 的数据
-                EC2_update_condition_672 = EC2_update_condition & (Other_new_df['lineItem/UsageAmount'] == 672)
+                EC2_update_condition_672 = EC2_condition & (Other_new_df['lineItem/ResourceId'] == 'i-0b60b7c5f1520f34c')& (Other_new_df['product/region'] == 'eu-central-1')
                 st.write(f"EC2_update_condition_672数据行数: {len(Other_new_df[EC2_update_condition_672])}")
                 st.write("EC2_update_condition_672数据预览:")
                 st.dataframe(Other_new_df[EC2_update_condition_672].head(1000))
                 # Other_new_df筛选出RDS_update_condition 且lineItem/UsageAmount 为 672 的数据
-                RDS_update_condition_672 = RDS_update_condition & (Other_new_df['lineItem/UsageAmount'] == 672)
+                RDS_update_condition_672 = RDS_condition & (Other_new_df['lineItem/ResourceId'] == 'arn:aws:rds:eu-central-1:367754112809:db:p1bu-instance-1')& (Other_new_df['product/region'] == 'eu-central-1')
                 st.write(f"RDS_update_condition_672数据行数: {len(Other_new_df[RDS_update_condition_672])}")
                 st.write("RDS_update_condition_672数据预览:")
                 st.dataframe(Other_new_df[RDS_update_condition_672].head(1000))
-                
+                # Other_new_df筛选出GP3_update_condition 且lineItem/UsageAmount 为 672 的数据
+                GP3_update_condition_672 = GP3_condition & (Other_new_df['lineItem/ResourceId'] == 'vol-00c1dc7e10e3fa97a')& (Other_new_df['product/region'] == 'eu-central-1')
+                st.write(f"GP3_update_condition_672数据行数: {len(Other_new_df[GP3_update_condition_672])}")
+                st.write("GP3_update_condition_672数据预览:")
+                st.dataframe(Other_new_df[GP3_update_condition_672].head(1000))
+                #--------------------新增资源--------------------------------
+                insert_df = pd.DataFrame()  # 创建一个空的 DataFrame
+                insert_df=pd.concat([insert_df,Other_new_df[EC2_update_condition_672],Other_new_df[RDS_update_condition_672],Other_new_df[GP3_update_condition_672]],ignore_index=True)
+                #bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	product/region	pricing/unit
+                insert_df=insert_df[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','product/region','pricing/unit']]
+                st.write(f"新增资源数据行数: {len(insert_df)}")
+                st.write(f"新增资源数据总费用: {insert_df['lineItem/UnblendedCost'].sum()}")
+                st.dataframe(insert_df)
 
-                
-                
-                
-                
-                # Other_new_df去掉条件为EC2_update_condition 且lineItem/UnblendedRate 为 0.194 的数据
-                Other_new_df = Other_new_df[~((EC2_update_condition & (Other_new_df['lineItem/UnblendedRate'] == 0.194)) | (RDS_update_condition & (Other_new_df['lineItem/UnblendedRate'] == 0.35)))]
+                Other_new_df=Other_new_df[~((EC2_update_condition_672) | (RDS_update_condition_672)|(GP3_update_condition_672))]
+                #我只需要这些列 bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	pricing/unit	product/region
+                Other_new_df=Other_new_df[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','pricing/unit','product/region']]
                 st.write(f"其他资源数据行数: {len(Other_new_df)}")
                 st.write("其他资源数据预览:")
                 st.dataframe(Other_new_df.head(1000))
+                st.write(f"其他数据总费用: {Other_new_df['lineItem/UnblendedCost'].sum()}")
+              
+                
+
                
 
-                st.write(f"新增资源数据行数: {len(insert_df)}")
-                st.dataframe(insert_df)
+                # st.write(f"新增资源数据行数: {len(insert_df)}")
+                # st.dataframe(insert_df)
                
                 # 添加数据下载按钮
                 # csv = EC2_new_df.to_csv(index=False)
@@ -230,7 +146,7 @@ def tuo_bang_aws_3677():
             st.download_button(
                 label="下载处理后的数据",
                 data=output.getvalue(),
-                file_name="processed_data.xlsx",
+                file_name="拓邦-AWS-3677.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
             st.success("文件已准备好，请点击上方按钮下载")
