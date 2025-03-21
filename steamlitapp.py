@@ -59,7 +59,7 @@ def main():
             "迅雷-CDN-AWS（ok）": xunlei_cdn_aws,
             "总账单-微软云(ok)": All_bill_microsoft,
             "拓邦-AWS-9042（ok）": tuo_bang_aws_9042,
-            "拓邦-AWS-3677": tuo_bang_aws_3677, 
+            "拓邦-AWS-3677（ok）": tuo_bang_aws_3677, 
             "迅雷-Smartchain-AWS（ok）": xunlei_smartchain_aws,
             "正浩-AWS(ok)": zhenghao_aws
         }
