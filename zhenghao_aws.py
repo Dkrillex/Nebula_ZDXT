@@ -6,7 +6,7 @@ import io
 
 
 def zhenghao_aws():
-    st.title("正浩-AWS(需求不明显)")
+    st.title("正浩-AWS")
     st.write("Create by Jackie Chen")
 
     # 上传文件
@@ -43,7 +43,7 @@ def zhenghao_aws():
         df['lineItem/UnblendedCost'] = np.where(df['lineItem/LineItemType'].isin(['DiscountedUsage']), df['pricing/publicOnDemandCost'], df['lineItem/UnblendedCost'])
         col = ['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','product/pricingUnit']
         
-        df[col] = df[col]
+        df = df[col]
         # st.write("df[col]为str",df[col].dtypes)
         st.write(df.shape[0],"--正确")
         st.write(df['lineItem/UnblendedCost'].sum())
