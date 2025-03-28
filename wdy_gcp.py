@@ -3,6 +3,7 @@ import os
 import streamlit as st
 import openpyxl
 from steamlitapp import adjust_column_width
+import numpy as np
 
 def wdy_gcp():
     st.title("万得云GCP翻译")
@@ -56,16 +57,22 @@ def wdy_gcp():
                     right_on='客户project-id',
                     how='left')
             
-
-            merged_df['new_cost'] = merged_df['Cost ($)'] / 0.3
+            # 判断Service description是否包含Cloud Speech API，是则原价，否则除以0.3
+            merged_df['new_cost'] = np.where(
+                merged_df['Service description'].str.contains('Cloud Speech API'),
+                merged_df['Cost ($)'],
+                merged_df['Cost ($)'] / 0.3
+            )
+            
+            # merged_df['new_cost'] = merged_df['Cost ($)'] / 0.3
             # 按客户公司名称筛选数据
             merged_df1 = merged_df[merged_df['客户公司名称'] =='小黑鱼']
             merged_df2 = merged_df[merged_df['客户公司名称'] =='优聚大鱼'] 
             merged_df3 = merged_df[merged_df['客户公司名称'] =='玖邦数码']
-            # 每个表的Cost ($)字段除以0.3赋值到new_cost
-            merged_df1['new_cost'] = merged_df1['Cost ($)'] / 0.3
-            merged_df2['new_cost'] = merged_df2['Cost ($)'] / 0.3
-            merged_df3['new_cost'] = merged_df3['Cost ($)'] / 0.3
+            # # 每个表的Cost ($)字段除以0.3赋值到new_cost
+            # merged_df1['new_cost'] = merged_df1['Cost ($)'] / 0.3
+            # merged_df2['new_cost'] = merged_df2['Cost ($)'] / 0.3
+            # merged_df3['new_cost'] = merged_df3['Cost ($)'] / 0.3
 
                 
 
