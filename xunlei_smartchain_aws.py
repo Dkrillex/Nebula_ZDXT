@@ -77,8 +77,9 @@ def xunlei_smartchain_aws():
         # 添加总和行，同样保持10位小数
         #total_sum = sum(float(x) for x in df_cost['金额（美金）'])
         # df_cost.loc[len(df_cost)] = ['总计', '{:.10f}'.format(total_sum)]
-        
-
+        #bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	product/pricingUnit	product/region	resourceTags/user:BIU	resourceTags/user:D	resourceTags/user:FELO	resourceTags/user:HIGO	resourceTags/user:HIYA	resourceTags/user:HOKI	resourceTags/user:K	resourceTags/user:Name	resourceTags/user:OP	resourceTags/user:OS	resourceTags/user:U	resourceTags/user:W	
+        df = df[['bill/PayerAccountId', 'lineItem/UsageAccountId', 'lineItem/UsageStartDate', 'lineItem/UsageEndDate', 'lineItem/ProductCode', 'lineItem/UsageAmount', 'lineItem/UnblendedRate', 'lineItem/UnblendedCost', 'lineItem/LineItemDescription', 'product/pricingUnit', 'product/region', 'resourceTags/user:BIU', 'resourceTags/user:D', 'resourceTags/user:FELO', 'resourceTags/user:HIGO', 'resourceTags/user:HIYA', 'resourceTags/user:HOKI', 'resourceTags/user:K', 'resourceTags/user:Name', 'resourceTags/user:OP', 'resourceTags/user:OS', 'resourceTags/user:U', 'resourceTags/user:W']]
+    
         st.write("标签费用统计:")
         st.dataframe(df_cost)
 
