@@ -60,6 +60,8 @@ def tuo_bang_aws_3677():
                 st.write("未修改的GP3_condition数据预览:")
                 st.dataframe(Other_new_df[GP3_condition].head(1000))
 
+                Other_new_df.loc[EC2_condition, 'lineItem/UnblendedRate'] = Other_new_df.loc[EC2_condition, 'pricing/publicOnDemandRate']
+                Other_new_df.loc[EC2_condition, 'lineItem/UnblendedRate'] = Other_new_df.loc[EC2_condition, 'pricing/publicOnDemandRate'].fillna(0)
                 Other_new_df.loc[EC2_condition, 'lineItem/UnblendedCost'] = Other_new_df.loc[EC2_condition, 'pricing/publicOnDemandCost']
                 Other_new_df.loc[RDS_condition, 'lineItem/UnblendedRate'] = Other_new_df.loc[RDS_condition, 'pricing/publicOnDemandRate']
                 Other_new_df.loc[RDS_condition, 'lineItem/UnblendedCost'] = Other_new_df.loc[RDS_condition, 'pricing/publicOnDemandCost']

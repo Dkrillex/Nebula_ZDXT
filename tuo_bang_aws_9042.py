@@ -129,7 +129,9 @@ def tuo_bang_aws_9042():
         st.write()
         st.write("总数",df9042['lineItem/UnblendedCost'].sum())
         # 获取df9042的bill/PayerAccountId	lineItem/UsageAccountId	lineItem/UsageStartDate	lineItem/UsageEndDate	lineItem/ProductCode	lineItem/UsageAmount	lineItem/UnblendedRate	lineItem/UnblendedCost	lineItem/LineItemDescription	pricing/Unit
-        df9042_new = df9042[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','pricing/unit','lineItem/LineItemType']]
+        # df9042_new = df9042[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','pricing/unit','lineItem/LineItemType']]
+        df9042_new = df9042[['bill/PayerAccountId','lineItem/UsageAccountId','lineItem/UsageStartDate','lineItem/UsageEndDate','lineItem/ProductCode','lineItem/UsageAmount','lineItem/UnblendedRate','lineItem/UnblendedCost','lineItem/LineItemDescription','pricing/unit']]
+
         # 调整每个sheet的列宽
         st.dataframe(df9042_new)
         st.download_button(
