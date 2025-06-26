@@ -12,7 +12,7 @@ def process_data_for_yunyan(df):
     df['修改后的单价'] = df['单位价格 (UnitPrice)'] * 1.06
     df['修改后的单价'] = df['修改后的单价'].apply(lambda x: "{:.6f}".format(float(x)))
     # 根据是否包含4o使用不同汇率
-    df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('4', na=False)|df['计量名称 (MeterName)'].str.contains('mini', na=False), 
+    df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('4o', na=False)|df['计量名称 (MeterName)'].str.contains('mini', na=False)|df['计量名称 (MeterName)'].str.contains('4-turbo', na=False), 
                               df['修改后的单价'].astype(float) / 7.3314, 
                               df['修改后的单价'].astype(float) / 6.8512)
     # 显示小数点后六位
@@ -26,12 +26,22 @@ def process_data_for_xuanna(df):
     df = df.copy()
     # 修改Inp-glbl Tokens的单价
     df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('Inp-glbl', na=False), 
-                              0.000165, df['单位价格 (UnitPrice)'])
+                              0.00015, df['单位价格 (UnitPrice)'])
     
     # 修改Outp-glbl Tokens的单价
     df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('Outp-glbl', na=False), 
-                              0.00066, df['修改后的单价'])
+                              0.0006, df['修改后的单价'])
     
+    # # 修改Batch Inp-glbl Tokens的单价
+    # df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('Batch Inp-glbl', na=False),
+    #                           0.000075, df['修改后的单价'])
+
+    #  # 修改Batch Outp-glbl Tokens的单价
+    # df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('Batch Outp-glbl', na=False),
+    #                           0.0003, df['修改后的单价'])
+
+
+
     # 处理其他价格（根据是否包含4o使用不同汇率）
     df['修改后的单价'] = np.where(
         ~df['计量名称 (MeterName)'].str.contains('Inp-glbl', na=False) & 
@@ -53,6 +63,36 @@ def process_data_for_yixuan(df):
     df = df.copy()
     df['含税单位价格'] = df['单位价格 (UnitPrice)']*1.06
     df['含税价格'] = df['含税单位价格']*df['数量 (Quantity)']
+    df['计费货币 (BillingCurrency)'] = 'CNY'
+    return df
+def process_data_for_taipingyang(df):
+    """处理广东太平洋互联网信息服务有限公司的数据"""
+    df = df.copy()
+    # 先乘以1.07
+    # df['修改后的单价'] = df['单位价格 (UnitPrice)'] * 1.07
+    # df['修改后的单价'] = df['修改后的单价'].apply(lambda x: "{:.6f}".format(float(x)))
+    # 根据是否包含4o使用不同汇率
+    # df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('4', na=False)|df['计量名称 (MeterName)'].str.contains('mini', na=False), 
+    #                           df['修改后的单价'].astype(float) / 7.3314, 
+    #                           df['修改后的单价'].astype(float) / 6.8512)
+    # 显示小数点后六位
+    # 计算修改后的成本
+    # df['修改后的成本'] = df['修改后的单价'].astype(float) * df['数量 (Quantity)']
+    df['计费货币 (BillingCurrency)'] = 'CNY'
+    return df
+def process_data_for_aimo(df):
+    """处理埃默科技（海南）有限公司的数据"""
+    df = df.copy()
+    # 先乘以1.07
+    # df['修改后的单价'] = df['单位价格 (UnitPrice)'] * 1.07
+    # df['修改后的单价'] = df['修改后的单价'].apply(lambda x: "{:.6f}".format(float(x)))
+    # # 根据是否包含4o使用不同汇率
+    # df['修改后的单价'] = np.where(df['计量名称 (MeterName)'].str.contains('4', na=False)|df['计量名称 (MeterName)'].str.contains('mini', na=False), 
+    #                           df['修改后的单价'].astype(float) / 7.3314, 
+    #                           df['修改后的单价'].astype(float) / 6.8512)
+    # 显示小数点后六位
+    # 计算修改后的成本
+    # df['修改后的成本'] = df['修改后的单价'].astype(float) * df['数量 (Quantity)']
     df['计费货币 (BillingCurrency)'] = 'CNY'
     return df
  
@@ -105,6 +145,10 @@ def All_bill_microsoft():
                 processed_df = process_data_for_xuanna(group)
             elif account_name == '芜湖益炫网络科技有限公司':
                 processed_df = process_data_for_yixuan(group)
+            elif account_name == '广东太平洋互联网信息服务有限公司':
+                processed_df = process_data_for_taipingyang(group)
+            elif account_name == '埃默科技（海南）有限公司':
+                processed_df = process_data_for_aimo(group)
             processed_dfs[account_name] = processed_df
             st.write(f"{account_name} 处理后的数据：")
             st.dataframe(processed_df)
