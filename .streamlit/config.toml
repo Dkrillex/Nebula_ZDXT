@@ -1,4 +1,19 @@
 [server]
-maxUploadSize = 600
-runOnSave = true
-maxMessageSize = 600
+maxUploadSize = 1024
+runOnSave = false
+maxMessageSize = 1024
+enableCORS = false
+enableXsrfProtection = false
+enableWebsocketCompression = false
+allowRunOnSave = false
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"
+
+[global]
+developmentMode = false
+
+[logger]
+level = "error"
+
